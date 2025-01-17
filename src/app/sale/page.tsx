@@ -1,53 +1,38 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaAngleRight, FaCaretDown, FaCaretUp } from "react-icons/fa";
 import Image from "next/image";
-import product1 from '../../components/assests/s1.png'
-import product2 from '../../components/assests/s2.png'
-import product3 from '../../components/assests/s3.png'
-import product4 from '../../components/assests/s4.png'
-import product5 from '../../components/assests/s5.png'
-import product6 from '../../components/assests/s6.png'
-import product7 from '../../components/assests/s7.png'
-import product8 from '../../components/assests/s8.png'
-import product9 from '../../components/assests/s9.png'
-import product10 from '../../components/assests/s10.png'
-import product11 from '../../components/assests/s11.png'
-import product12 from '../../components/assests/s12.png'
-import product13 from '../../components/assests/s13.png'
-import product14 from '../../components/assests/s14.png'
-import product15 from '../../components/assests/s15.png'
-import product16 from '../../components/assests/s16.png'
-import product17 from '../../components/assests/s17.png'
-import product18 from '../../components/assests/s18.png'
-import product19 from '../../components/assests/s19.png'
-import product20 from '../../components/assests/s20.png'
-import product21 from '../../components/assests/s21.png'
+import Client from "../../sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-// Define the interface for the product
 interface Product {
-  id: number;
-  title: string;
+  _id: string;
+  productName: string;
   category: string;
   price: number;
+  image: string;
 }
 
-const productImages = [product1, product2, product3, product4, product5, product6, product7, product8 ,product9 ,product10 ,product11 ,product12 ,product13 ,product14 ,product15 ,product16 ,product17 ,product18 ,product19 ,product20 ,product21];
-
 export default function Sale() {
-  // State for managing the sidebar toggle in mobile view
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  // State for product data, now typed using the Product interface
-  const [products, setProducts] = useState<Product[]>([]); // Specify type as Product[]
-
-  // Fetch product data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const fetchdata = await fetch("https://dummyjson.com/products");
-      const response = await fetchdata.json();
-      setProducts(response.products); // Set products data
+      try {
+        const query = `*[_type == "product"] {
+          _id,
+          productName,
+          category,
+          price,
+          "image": image.asset->url
+        }`;
+        const data = await Client.fetch(query);
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
     };
 
     fetchData();
@@ -100,16 +85,20 @@ export default function Sale() {
           </ul>
         </div>
 
+
         {/* Product Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
           {products.length > 0 ? (
-            products.map((item, index) => (
-              <div key={index} className="font-bold text-slate-600">
-                <Link href={`/product/${item.id}`} className="block">
-                  {/* Using dynamic image URL */}
-                  <Image src={productImages[index % productImages.length]} alt={"shoes"} width={400} height={300} />
-                  
-                  <p className="mt-2">{item.title}</p>
+            products.map((item) => (
+              <div key={item._id} className="font-bold text-slate-600">
+                <Link href={`/product/${item._id}`} className="block">
+                  <img
+                    src={item.image} // Use urlFor to generate correct image URL
+                    alt={item.productName}
+                    width={400}
+                    height={300}
+                  />
+                  <p className="mt-2">{item.productName}</p>
                   <p>{item.category}</p>
                   <p>₹ {item.price}</p>
                 </Link>
