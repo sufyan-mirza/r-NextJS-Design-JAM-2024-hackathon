@@ -1,8 +1,10 @@
 'use client'
-
+import nike from "../../public/NIKE.png"
+import vector from "../../public/Vector.png"
 import React, { useState } from "react";
 import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import Link from "next/link";
+import Image from "next/image";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +15,7 @@ const Header = () => {
       <header className="text-gray-600 body-font bg-gray-100 shadow-md">
         <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
           <h1 className="sm:text-2xl text-xl mt-2 font-bold text-gray-900 mb-4 md:mb-0">
-            <img src="Vector.png" alt="Logo" className="h-6 w-auto" />
+            <Image src={vector} alt="Logo" className="h-6 w-auto" />
           </h1>
           
           <div className='flex items-center justify-end gap-4 text-[#0c0303] font-semibold'>
@@ -31,7 +33,7 @@ const Header = () => {
       <header className="text-black text-sm body-font bg-white shadow-md">
         <div className="container mx-auto flex p-3 justify-between items-center px-4 sm:px-6 md:px-8">
           <h1 className="sm:text-2xl text-xl mt-2 font-bold text-gray-900 mb-4 md:mb-0">
-            <img src="NIKE.png" alt="Logo" className="h-7 w-auto" />
+            <Image src={nike} alt="Logo" className="h-7 w-auto" />
           </h1>
 
           {/* Desktop Navigation Links */}
