@@ -1,0 +1,6 @@
+Test Case ID,Test Case Description,Test Steps,Expected Result,Actual Result,Status,Severity Level,Assigned To,Remarks
+TC001,Verify product listing loads correctly,Navigate to the product listing page,All products are displayed correctly,All products displayed correctly,Passed,Low,Sufyan Mirza,No issues detected
+TC002,Test category filter functionality,Select a category from the filter menu,Only products from the selected category are shown,Products from the selected category shown,Passed,Medium,Sufyan Mirza,Filter worked perfectly
+TC003,Validate price range filter,Enter a min and max price and apply filter,Products within the price range are displayed,Products within price range displayed,Passed,Medium,Sufyan Mirza,Filter displayed correct results
+TC004,Check sorting by price (High to Low),Sort products by selecting 'High to Low' option,Products are sorted from highest to lowest price,Products sorted as expected,Passed,Medium,Sufyan Mirza,Sorting functionality flawless
+TC005,Ensure responsive design on mobile devices,Resize browser window to mobile dimensions,Layout adapts to fit smaller screens correctly,Layout adapted as expected,Passed,High,Sufyan Mirza,Responsive design confirmed on multiple devices
