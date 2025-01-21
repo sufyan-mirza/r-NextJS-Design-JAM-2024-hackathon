@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useCart } from "../../Context/CartContext";
-import Client from "../../../sanity/lib/client";
+import client from "../../../sanity/lib/client";
 import { useParams } from "next/navigation";
 
 interface Product {
@@ -43,7 +43,7 @@ const Page = () => {
           price,
           "image": image.asset->url
         }`;
-        const data = await Client.fetch(query, { name: productName });
+        const data = await client.fetch(query, { name: productName });
         if (!data) {
           setError("Product not found.");
         } else {

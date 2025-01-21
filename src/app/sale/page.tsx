@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaAngleRight, FaCaretDown, FaCaretUp } from "react-icons/fa";
 
-import Client from "../../sanity/lib/client";
+import client from "../../sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 
 interface Product {
@@ -34,7 +34,7 @@ export default function Sale() {
           price,
           "image": image.asset->url
         }`;
-        const data: Product[] = await Client.fetch(query);
+        const data: Product[] = await client.fetch(query);
 
         setProducts(data);
 
