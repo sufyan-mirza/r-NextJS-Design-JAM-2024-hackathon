@@ -1,7 +1,7 @@
 "use client";
 import { useCart } from "../Context/CartContext"; // Import useCart hook
 import Link from "next/link";
-import Image from "next/image";
+
 
 const CartPage = () => {
   const { cart, removeFromCart, incrementQuantity, decrementQuantity } = useCart();
