@@ -9,8 +9,10 @@ interface Product {
   productName: string;
   description: string;
   category: string;
-  brand: string;
   price: number;
+  inventory: number;
+  colors: string[];
+  status: string;
   image?: string;
 }
 
@@ -39,8 +41,10 @@ const Page = () => {
           productName,
           description,
           category,
-          brand,
           price,
+          inventory,
+          colors,
+          status,
           "image": image.asset->url
         }`;
         const data = await client.fetch(query, { name: productName });
@@ -68,7 +72,7 @@ const Page = () => {
   }, [successMessage]);
 
   const handleAddToCart = (product: Omit<Product, "quantity">) => {
-    addToCart({ ...product, quantity: 1 }); // Add quantity
+    addToCart({ ...product, quantity: 1 });
     setSuccessMessage("Product added successfully!");
   };
 
@@ -103,8 +107,31 @@ const Page = () => {
             <span className="font-bold">Category:</span> {product.category}
           </p>
           <p className="text-gray-500">
-            <span className="font-bold">Brand:</span> {product.brand}
+            <span className="font-bold">Inventory:</span> {product.inventory}
           </p>
+          <p className="text-gray-500">
+            <span className="font-bold">Status:</span> {product.status}
+          </p>
+          <div>
+            <h3 className="font-semibold mb-2">Available Colors:</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {product.colors.map((color, index) => (
+                <div
+                  key={index}
+                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: color,
+                    border: color === "white" ? "2px solid black" : "1px solid #ccc",
+                    boxShadow: color === "white" ? "0 0 8px rgba(0, 0, 0, 0.5)" : "0 0 4px rgba(0, 0, 0, 0.2)",
+                  }}
+                >
+                  {color === "white" && (
+                    <span className="text-black font-medium text-xs">White</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
           <button
             onClick={() => handleAddToCart(product)}
             aria-label={`Add ${product.productName} to cart`}
