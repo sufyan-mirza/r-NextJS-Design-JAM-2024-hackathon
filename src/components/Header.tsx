@@ -192,7 +192,7 @@ const Header = () => {
             <Link href={"/women"} className="hover:text-gray-900">Women</Link>
             <Link href={"/kids"} className="hover:text-gray-900">Kids</Link>
             <Link href={"/sale"} className="hover:text-gray-900">Sale</Link>
-            <Link href={"/shoes"} className="hover:text-gray-900">SNKRS</Link>
+            <Link href={"/shoes"} className="hover:text-gray-900">Shoes</Link>
           </nav>
         )}
       </header>
