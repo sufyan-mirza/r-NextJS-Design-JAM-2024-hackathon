@@ -20,8 +20,6 @@ export default function Sale() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All Categories");
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(10000);
   const [sortBy, setSortBy] = useState<string>("default");
 
   useEffect(() => {
@@ -55,14 +53,13 @@ export default function Sale() {
     fetchData();
   }, []);
 
-  // Filter products based on selected category and price range
+  // Filter products based on selected category
   useEffect(() => {
     const filterProducts = () => {
       let filtered = products.filter((product) => {
         const isCategoryMatch =
           selectedCategory === "All Categories" || product.category === selectedCategory;
-        const isPriceMatch = product.price >= minPrice && product.price <= maxPrice;
-        return isCategoryMatch && isPriceMatch;
+        return isCategoryMatch;
       });
 
       // Sort products if the "High to Low" option is selected
@@ -74,7 +71,7 @@ export default function Sale() {
     };
 
     filterProducts();
-  }, [selectedCategory, minPrice, maxPrice, products, sortBy]);
+  }, [selectedCategory, products, sortBy]);
 
   return (
     <div className="container mx-auto px-4 sm:px-6 md:px-8 mt-5">
@@ -94,20 +91,13 @@ export default function Sale() {
 
           {/* Categories list */}
           <ul
-            className={`flex flex-col gap-6 border-r border-gray-300 pt-10 pr-6 lg:block ${
-              isSidebarOpen ? "block" : "hidden"
-            } lg:flex`}
+            className={`flex flex-col gap-6 border-r border-gray-300 pt-10 pr-6 lg:block ${isSidebarOpen ? "block" : "hidden"} lg:flex`}
           >
             {categories.map((category, index) => (
-              <li
-                key={index}
-                className="flex justify-between items-center w-full cursor-pointer hover:text-gray-500"
-              >
+              <li key={index} className="flex justify-between items-center w-full cursor-pointer hover:text-gray-500">
                 <button
                   onClick={() => setSelectedCategory(category)}
-                  className={`text-sm sm:text-base ${
-                    selectedCategory === category ? "text-blue-600" : ""
-                  }`}
+                  className={`text-sm sm:text-base ${selectedCategory === category ? "text-blue-600" : ""}`}
                 >
                   {category}
                 </button>
@@ -115,27 +105,6 @@ export default function Sale() {
               </li>
             ))}
           </ul>
-
-          {/* Price Range Filter */}
-          <div className="mt-10">
-            <h3 className="text-lg font-semibold">Price Range</h3>
-            <div className="flex flex-col gap-2">
-              <input
-                type="number"
-                value={minPrice}
-                onChange={(e) => setMinPrice(Number(e.target.value))}
-                className="border p-2 rounded-md"
-                placeholder="Min Price"
-              />
-              <input
-                type="number"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="border p-2 rounded-md"
-                placeholder="Max Price"
-              />
-            </div>
-          </div>
         </div>
 
         {/* Product Section */}
