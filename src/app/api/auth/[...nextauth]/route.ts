@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
-import { cookies } from "next/headers"; // Keep this, as it's used for storing cookies
+import { cookies } from "next/headers"; // Ensure this is used correctly
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID || "",
@@ -26,10 +26,10 @@ export const authOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.image = token.picture;
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.image = token.picture as string;
 
         // Store user session securely in cookies
         cookies().set("userSession", JSON.stringify(session.user), {
@@ -45,7 +45,7 @@ export const authOptions = {
   },
   pages: {
     signIn: "/login",
-    error: "/auth/error", // Custom error page (optional)
+    error: "/auth/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
