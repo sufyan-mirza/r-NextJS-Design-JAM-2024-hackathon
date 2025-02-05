@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions, User } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import { cookies } from "next/headers"; // Import cookies correctly
+import { NextApiRequest, NextApiResponse } from "next"; // Import types for request and response
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -27,7 +28,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      
       if (session.user) {
         session.user.id = token.id as string; // Ensure id exists in session user
         session.user.name = token.name as string;
@@ -57,5 +57,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST, handler as default };
+// Export methods directly (GET, POST) with correct types for req and res
+export const GET = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
+export const POST = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
