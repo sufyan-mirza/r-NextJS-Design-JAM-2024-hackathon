@@ -58,6 +58,10 @@ export const authOptions: NextAuthOptions = {
 };
 
 // Create the Next.js API route handler
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+  return NextAuth(req, res, authOptions);
+}
+
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
   return NextAuth(req, res, authOptions);
 }
