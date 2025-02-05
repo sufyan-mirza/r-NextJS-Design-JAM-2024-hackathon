@@ -1,10 +1,14 @@
 "use client";
 import { useCart } from "../Context/CartContext"; // Import useCart hook
-import Link from "next/link";
+
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation"; // For redirection
 
 const CartPage = () => {
   const { cart, removeFromCart, incrementQuantity, decrementQuantity } = useCart();
+  const { data: session } = useSession(); // Get session data
+  const router = useRouter(); // For redirecting the user
 
   const handleRemove = (productName: string) => {
     removeFromCart(productName);
@@ -12,6 +16,15 @@ const CartPage = () => {
 
   const getTotalPrice = () => {
     return cart.reduce((total, product) => total + product.price * product.quantity, 0);
+  };
+
+  // Redirect to login if user is not logged in and tries to access checkout
+  const handleCheckout = () => {
+    if (!session) {
+      router.push("/login"); // Redirect to login page
+    } else {
+      router.push("/checkout"); // Proceed to checkout page
+    }
   };
 
   return (
@@ -85,11 +98,12 @@ const CartPage = () => {
           {/* Checkout Section */}
           <div className="flex flex-col sm:flex-row justify-between items-center bg-gray-100 p-6 rounded-lg shadow-lg mb-8">
             <p className="text-2xl font-semibold">Total: ₹{getTotalPrice()}</p>
-            <Link href="/checkout">
-              <button className="bg-black text-white py-3 px-8 rounded-lg shadow-xl w-full sm:w-auto transform transition-all duration-300 hover:bg-gray-800 hover:scale-105">
-                Proceed to Checkout
-              </button>
-            </Link>
+            <button
+              onClick={handleCheckout}
+              className="bg-black text-white py-3 px-8 rounded-lg shadow-xl w-full sm:w-auto transform transition-all duration-300 hover:bg-gray-800 hover:scale-105"
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </>
       )}

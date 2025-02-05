@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaAngleRight, FaCaretDown, FaCaretUp } from "react-icons/fa";
@@ -12,6 +12,7 @@ interface Product {
   category: string;
   price: number;
   image: string;
+  status: string; // Added status field to each product
 }
 
 export default function Sale() {
@@ -30,7 +31,8 @@ export default function Sale() {
           productName,
           category,
           price,
-          "image": image.asset->url
+          "image": image.asset->url,
+          status
         }`;
         const data: Product[] = await client.fetch(query);
 
@@ -122,21 +124,27 @@ export default function Sale() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((item) => (
-                <div key={item._id} className="font-bold text-slate-600">
+                <div key={item._id} className="bg-white border border-black rounded-lg overflow-hidden shadow-md p-4 transition-transform duration-300 transform hover:scale-105">
                   <Link href={`/product/${item.productName}`} className="block">
                     <img
                       src={urlFor(item.image).url()}
                       alt={item.productName}
                       width={400}
                       height={300}
-                      className="rounded-md object-cover"
+                      className="rounded-md object-cover h-40 w-full" // Reduced image height
                     />
-                    <p className="mt-2">{item.productName}</p>
-                    <p>{item.category}</p>
-                    <p>₹ {item.price}</p>
+                    <div className="mt-2">
+                      <p className="mt-1 text-sm text-orange-800" >
+                        {item.status}
+                      </p>
+                      {/* Truncated product name on small/medium screens */}
+                      <p className="text-base font-semibold sm:text-sm md:text-base lg:text-lg truncate">{item.productName}</p> 
+                      <p className="text-sm text-gray-500">{item.category}</p>
+                      <p className="mt-2 text-lg font-bold">${item.price}</p>
+                    </div>
                   </Link>
                 </div>
               ))

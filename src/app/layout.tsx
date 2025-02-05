@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CartProvider } from "./Context/CartContext";
+import SessionWrapper from "../components/SessionWrapper";
+ // Correct path
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,20 +25,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <CartProvider>
-          <Header />
-          {children}
-          <Footer />
-        </CartProvider>
-      </body>
+      <SessionWrapper>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <CartProvider>
+            <Header />
+            {children}
+            <Footer />
+          </CartProvider>
+        </body>
+      </SessionWrapper>
     </html>
   );
 }
