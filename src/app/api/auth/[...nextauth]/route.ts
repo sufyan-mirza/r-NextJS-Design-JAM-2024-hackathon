@@ -57,6 +57,7 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// Export methods directly (GET, POST) with correct types for req and res
-export const GET = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
-export const POST = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
+// Create the Next.js API route handler
+export async function handler(req: NextApiRequest, res: NextApiResponse) {
+  return NextAuth(req, res, authOptions);
+}
