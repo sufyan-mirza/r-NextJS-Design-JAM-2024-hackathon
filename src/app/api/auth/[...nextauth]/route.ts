@@ -1,7 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
-import { cookies } from "next/headers"; // Ensure this is used correctly
+import { cookies } from "next/headers"; // Import cookies correctly
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -17,22 +17,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.picture = user.image;
+        // Cast user to include 'id' property
+        const typedUser = user as User & { id: string }; // Ensure `id` exists
+        token.id = typedUser.id;
+        token.name = typedUser.name;
+        token.email = typedUser.email;
+        token.picture = typedUser.image;
       }
       return token;
     },
     async session({ session, token }) {
+      
       if (session.user) {
-        session.user.id = token.id as string;
+        session.user.id = token.id as string; // Ensure id exists in session user
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
 
-        // Store user session securely in cookies
-        cookies().set("userSession", JSON.stringify(session.user), {
+        // ✅ Correct way to set cookies (use await)
+        const cookieStore = await cookies(); // Await cookies() to resolve the promise
+        cookieStore.set("userSession", JSON.stringify(session.user), {
           path: "/",
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
@@ -54,4 +58,4 @@ export const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, handler as default };
