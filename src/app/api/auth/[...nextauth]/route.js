@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID,
@@ -39,7 +39,7 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
-};
+});
 
-const handler = NextAuth(authOptions);
+// ✅ Correct export for App Router (Next.js 13+)
 export { handler as GET, handler as POST };
