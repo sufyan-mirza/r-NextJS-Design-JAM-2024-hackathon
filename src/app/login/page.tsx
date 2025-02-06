@@ -5,7 +5,11 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 
 export default function SignIn() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
 
   return (
     <div className="flex mt-10 justify-center mb-10 bg-[#FFFFFF]">
@@ -17,7 +21,7 @@ export default function SignIn() {
         {session ? (
           <div className="text-center">
             <img 
-              src={session.user?.image??"default-profile.png"} 
+              src={session.user?.image ?? "default-profile.png"} 
               alt="User Profile" 
               className="w-16 h-16 rounded-full mx-auto mb-4"
             />
